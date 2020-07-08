@@ -1,0 +1,27 @@
+{
+  "name": "image-sharpener",
+  "version": "1.0.0",
+  "description": "Image sharpener service",
+  "scripts": {
+    "test": "",
+    "build": "cargo build",
+    "deploy": "sls deploy",
+    "teardown": "sls remove",
+    "local-invoke:imageResizeFunction": "sls invoke local -f imageResizeFunction"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jammymalina/image-sharpener.git"
+  },
+  "author": "Jakub Jantosik",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jammymalina/image-sharpener/issues"
+  },
+  "homepage": "https://github.com/jammymalina/image-sharpener#readme",
+  "devDependencies": {
+    "prettier": "2.0.5",
+    "serverless": "1.74.1",
+    "serverless-rust": "0.3.8"
+  }
+}
