@@ -21,7 +21,7 @@
   "homepage": "https://github.com/jammymalina/image-sharpener#readme",
   "devDependencies": {
     "prettier": "2.0.5",
-    "serverless": "1.74.1",
+    "serverless": "^1.74.1",
     "serverless-rust": "0.3.8"
   }
 }

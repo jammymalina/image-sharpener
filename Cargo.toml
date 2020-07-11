@@ -1,2 +1,2 @@
 [workspace]
-members = ["image_resize"]
+members = ["api_image_handler"]

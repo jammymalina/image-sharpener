@@ -1,5 +1,5 @@
 [package]
-name = "image_resize"
+name = "api_image_handler"
 version = "0.1.0"
 authors = ["Jakub Jantosik <jakub.jantosik@gmail.com>"]
 edition = "2018"
@@ -9,8 +9,11 @@ edition = "2018"
 [dependencies]
 lambda_runtime = "0.2.1"
 serde = { version = "1.0.114", features = ["derive"] }
-serde_derive = "1.0.114"
 serde_json = "1.0.56"
 log = "0.4.8"
 simple_logger = "1.6.0"
+image = "0.23.6"
+rusoto_core = "0.44.0"
+rusoto_s3 = "0.44.0"
+rusoto_dynamodb = "0.44.0"
 

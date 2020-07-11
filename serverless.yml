@@ -9,6 +9,20 @@ provider:
   timeout: 10
   versionFunctions: false
   logRetentionInDays: 1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource:
+        Fn::GetAtt: [imageTable, Arn]
+    - Effect: Allow
+      Action:
+        - s3:*
+      Resource:
+        Fn::GetAtt: [imageBucket, Arn]
+  environment:
+    IMAGE_TABLE_NAME: ${self:custom.imageTableName}
+    IMAGE_BUCKET_NAME: ${self:custom.imageBucketName}
 
 plugins:
   - serverless-rust
@@ -16,11 +30,31 @@ plugins:
 package:
   individually: true
 
+custom:
+  imageBucketName: !Ref imageBucket
+  imageTableName: !Ref imageTable
+
 functions:
-  imageResizeFunction:
-    handler: image_resize
+  apiImageHandlerFunction:
+    handler: api_image_handler
     events:
       - httpApi:
           method: POST
-          path: /image/resize
+          path: /image/{operation}
           payload: '2.0'
+
+resources:
+  Resources:
+    imageBucket:
+      Type: AWS::S3::Bucket
+    imageTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: image-table-${self:provider.stage}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
