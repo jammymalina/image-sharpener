@@ -13,3 +13,13 @@ pub struct ApiRequest {
     pub path_parameters: PathParameters,
     pub body: Option<String>,
 }
+
+impl ApiRequest {
+    pub fn extract_headers(&self) -> HashMap<String, String> {
+        let headers = self.headers.clone();
+        headers
+            .into_iter()
+            .map(|(header, header_value)| (header.to_ascii_lowercase(), header_value))
+            .collect()
+    }
+}
