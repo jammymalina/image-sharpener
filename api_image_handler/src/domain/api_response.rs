@@ -27,6 +27,14 @@ impl ApiResponseBuilder {
         }
     }
 
+    pub fn from_response(response: ApiResponse) -> Self {
+        ApiResponseBuilder {
+            status_code: response.status_code,
+            headers: response.headers.unwrap_or_default(),
+            body: response.body,
+        }
+    }
+
     pub fn with_status(mut self, status_code: u16) -> Self {
         self.status_code = status_code;
         self

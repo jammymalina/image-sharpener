@@ -1,13 +1,15 @@
 pub enum ErrorType {
     MissingHeaderError,
-    InvaidHeaderError,
+    InvalidHeaderError,
+    InvalidBodyError,
 }
 
 impl ErrorType {
     pub fn to_str(&self) -> &'static str {
         match self {
             Self::MissingHeaderError => "MissingHeaderError",
-            Self::InvaidHeaderError => "InvalidHeaderError",
+            Self::InvalidHeaderError => "InvalidHeaderError",
+            Self::InvalidBodyError => "InvalidBodyError",
         }
     }
 }

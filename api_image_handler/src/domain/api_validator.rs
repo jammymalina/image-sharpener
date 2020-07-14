@@ -1,7 +1,7 @@
-use super::api_request::ApiRequest;
 use super::errors::{
     api_error::ApiError, bad_request_error::BadRequestError, error_type::ErrorType,
 };
+use super::{api_request::ApiRequest, schedule_image_op_request::ScheduleImageOpBody};
 
 pub struct ApiValidator {
     event: ApiRequest,
@@ -12,6 +12,22 @@ impl ApiValidator {
         ApiValidator {
             event: event.clone(),
         }
+    }
+
+    fn validate_base64_str(base64_str: &str) -> Result<(), Box<dyn ApiError>> {
+        let base64_char_count: usize = (b'a'..b'z')
+            .chain(b'A'..b'Z')
+            .chain(b'0'..b'9')
+            .chain(vec![b'+', b'/', b'='].into_iter())
+            .map(|base64_char| base64_str.matches(char::from(base64_char)).count())
+            .sum();
+        if base64_char_count < base64_str.len() {
+            return Err(Box::new(BadRequestError::new(
+                "Invalid body",
+                ErrorType::InvalidBodyError,
+            )));
+        }
+        Ok(())
     }
 
     fn validate_header(
@@ -29,7 +45,7 @@ impl ApiValidator {
                         header_name,
                         expected_header_value.to_vec().join(", ")
                     ),
-                    ErrorType::InvaidHeaderError,
+                    ErrorType::InvalidHeaderError,
                 )))
             }
             _ => Ok(()),
@@ -53,6 +69,11 @@ impl ApiValidator {
             &["application/json", "application/json; charset=utf-8"],
         )?;
 
+        Ok(())
+    }
+
+    pub fn validate_body(&self, body: &ScheduleImageOpBody) -> Result<(), Box<dyn ApiError>> {
+        Self::validate_base64_str(&body.image_base64)?;
         Ok(())
     }
 }
